@@ -34,34 +34,38 @@ def merge(f1: list[BedLine], f2: list[BedLine], outfile: TextIO) -> None: # shou
     
     i = 0
     j = 0
+    n = len(f1)+1
+    m = len(f2)+1
 
     # how does one write to outfile? must remember...
     
-    while i <= len(f1): # i is our index for f1
-        while j <= len(f2): # j is our index for f2
-            if f1[i][0] == f2[j][0]: # if chromosomes for f1[i] and f2[j] are the same we compare start values
-                if f1[i][1] > f2[j][1]: # if f2 has the smaller start value
-                    # add f2 line to outfile
-                    j += 1
-                if f1[i][1] < f2[j][1]: # if f1 has the smaller start value
-                    # add f1 line to outfile
-                    i += 1
-                if f1[i][1] == f2[j][1]: # if they have the same start value
-                    # add f1 line to outfile
-                    i += 1
-                    # add f2 line to outfile
-                    j += 1
-            if f1[i][0] > f2[j][0]: # if f1 has a higher chromosome value
-                # add f2 to outfile
-                j += 1
-            if f1[i][0] < f2[j][0]: # if f2 has a higher chromosome value
+    while i < n and j < m: # before either list has been run fully through
+        if f1[i][0] < f2[j][0]: # chrom on f1 is smaller than f2
+            # add f1[i] to outfile
+            i += 1
+        if f1[i][0] > f2[j][0]: # chrom on f2 is smaller than f2
+            # add f2[j] to outfile
+            j += 1
+        else:
+            if f1[i][1] <= f2[j][1]: # chrom is the same, but start is smaller/the same for f1 compared to f2
                 # add f1 to outfile
                 i += 1
-        # j is no longer smaller or equal to len(f2), but i is
-        # add remaining f1 to outfile
-    if j <= len(f2): # if i is no longer smaller or equal to len(f1), bit j is
-        # add remaining f2 to outfile
+            else: # chrom is the same, but start for f2 is smaller than f1
+                # add f2 to outfile
+                j += 1
+    while i < n: # j must be equal to m, so all f2 elements are already in outfile
+        # add f1 to outfile
+        i += 1
+    while j < m: # i must be equal to n, so all f1 elements are already in outfile
+        # add f2 to outfile
+        j += 1
+    
+    return None # None is returned to the function
 
+# Inspiration found at https://www.geeksforgeeks.org/merge-two-sorted-arrays/ after attempt 1 to optimize/make it more readable.
+# Changes made:
+# replaced the first chrom check while loop with an else
+# made the case where start_1 < start_2 and start_1 == start_2 the same case
 
 def main() -> None:
     """Run the program."""
