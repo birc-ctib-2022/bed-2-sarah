@@ -29,9 +29,38 @@ def read_bed_file(f: TextIO) -> list[BedLine]:
     return res
 
 
-def merge(f1: list[BedLine], f2: list[BedLine], outfile: TextIO) -> None:
+def merge(f1: list[BedLine], f2: list[BedLine], outfile: TextIO) -> None: # should run in O(n + m) time
     """Merge features and write them to outfile."""
-    # FIXME: I have work to do here!
+    
+    i = 0
+    j = 0
+
+    # how does one write to outfile? must remember...
+    
+    while i <= len(f1): # i is our index for f1
+        while j <= len(f2): # j is our index for f2
+            if f1[i][0] == f2[j][0]: # if chromosomes for f1[i] and f2[j] are the same we compare start values
+                if f1[i][1] > f2[j][1]: # if f2 has the smaller start value
+                    # add f2 line to outfile
+                    j += 1
+                if f1[i][1] < f2[j][1]: # if f1 has the smaller start value
+                    # add f1 line to outfile
+                    i += 1
+                if f1[i][1] == f2[j][1]: # if they have the same start value
+                    # add f1 line to outfile
+                    i += 1
+                    # add f2 line to outfile
+                    j += 1
+            if f1[i][0] > f2[j][0]: # if f1 has a higher chromosome value
+                # add f2 to outfile
+                j += 1
+            if f1[i][0] < f2[j][0]: # if f2 has a higher chromosome value
+                # add f1 to outfile
+                i += 1
+        # j is no longer smaller or equal to len(f2), but i is
+        # add remaining f1 to outfile
+    if j <= len(f2): # if i is no longer smaller or equal to len(f1), bit j is
+        # add remaining f2 to outfile
 
 
 def main() -> None:
