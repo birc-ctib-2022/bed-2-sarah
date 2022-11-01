@@ -10,13 +10,49 @@ def lower_bound(x: list[int], v: int) -> int:
     """Get the index of the lower bound of v in x.
 
     If all values in x are smaller than v, return len(x).
+
+    >>>lower_bound([1, 4, 7, 9, 20, 24, 697], 20)
+    4
+
     """
-    return 0  # FIXME: Obviously the answer isn't always 0
+    start = 0 # start of search interval
+    end = len(x) # end of search interval
+    middel = (end - start)//2 # middel of search interval
+
+    while len(x[start:middel]) > 1:
+        if x[middel] > v:
+            end = middel # new interval is cut in half
+            middel = (end - start)//2 # middel of new interval is found
+        if x[middel] < v:
+            start = middel + 1 # new interval is cut in half, +1 because python is start inclusive
+            middel = (end - start)//2
+        if x[middel] == v:
+            return middel
+    else:
+        return len(x)
 
 
 def upper_bound(x: list[int], v: int) -> int:
     """Get the index of the upper bound of v in x.
 
     If all values in x are smaller than v, return len(x).
+
+    >>>upper_bound([1, 4, 7, 9, 20, 24, 697], 20)
+    4
+
     """
-    return 0  # FIXME: Obviously the answer isn't always 0
+    start = 0 # start of search interval
+    end = len(x) # end of search interval
+    middel = (end - start)//2 # middel of search interval
+
+    while len(x[start:middel]) > 1:
+        if x[middel] > v:
+            end = middel # new interval is cut in half
+            middel = (end - start)//2 # middel of new interval is found
+        if x[middel] < v:
+            start = middel + 1 # new interval is cut in half, +1 because python is start inclusive
+            middel = (end - start)//2
+        if x[middel] == v:
+            return middel
+    else:
+        return len(x)
