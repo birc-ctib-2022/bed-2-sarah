@@ -19,7 +19,7 @@ def lower_bound(x: list[int], v: int) -> int:
     end = len(x) # end of search interval
     middel = start + ((end - start)//2) # middel of search interval
 
-    while (end-start) >= 1:
+    while (end-start) >= 1 and middel < len(x):
         if x[middel] > v:
             end = middel # new interval is cut in half
             middel = start + ((end - start)//2) # middel of new interval is found
@@ -45,7 +45,7 @@ def upper_bound(x: list[int], v: int) -> int:
     end = len(x) # end of search interval
     middel = start + ((end - start)//2) # middel of search interval
 
-    while (end-start) >= 1:
+    while (end-start) >= 1 and middel < len(x)::
         if x[middel] > v:
             end = middel # new interval is cut in half
             middel = start + ((end - start)//2) # middel of new interval is found
