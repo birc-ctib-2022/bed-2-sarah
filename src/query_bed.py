@@ -11,7 +11,32 @@ from bed import (
 def extract_region(features: list[BedLine],
                    start: int, end: int) -> list[BedLine]:
     """Extract region chrom[start:end] and write it to outfile."""
-    return []  # FIXME: We want the actual region, not an empty list!
+
+    query_results = []
+    
+    i_start = 0
+    i_end = len(features)
+    i_middel = i_start + ((i_end - i_start)//2) # middel of search interval
+
+    while (i_end-i_start) >= 1 and i_middel < len(features):
+        if start <= features[i_middel][1] < end:
+        # using the assumption that our features are only a single nucleotide long,
+        # features within the query can be described with query-start <= feature-start < query-end
+        # and that assumption is the first to be checked
+            while features[i_middel][1] < end:
+                query_results.append(features[i_middel])
+                i_middel += 1
+            # we keep appending features to our results untill features-start >= query-end
+        # if a feature is not inside the query, there are two scenarios
+        # feature-start >= query-start
+        elif features[i_middel][1] >= end:
+            i_end = i_middel
+            i_middel = i_start + ((i_end - i_start)//2)
+        # feature-start < query-start
+        elif features[i_middel][1] < start:
+            i_start = i_middel + 1 
+            i_middel = i_start + ((i_end - i_start)//2)
+    return query_results
 
 
 def main() -> None:
