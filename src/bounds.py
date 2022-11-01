@@ -11,7 +11,7 @@ def lower_bound(x: list[int], v: int) -> int:
 
     If all values in x are smaller than v, return len(x).
 
-    >>>lower_bound([1, 4, 7, 9, 20, 24, 697], 20)
+    >>> lower_bound([1, 4, 7, 9, 20, 24, 697], 20)
     4
 
     """
@@ -37,7 +37,7 @@ def upper_bound(x: list[int], v: int) -> int:
 
     If all values in x are smaller than v, return len(x).
 
-    >>>upper_bound([1, 4, 7, 9, 20, 24, 697], 20)
+    >>> upper_bound([1, 4, 7, 9, 20, 24, 697], 20)
     4
 
     """
