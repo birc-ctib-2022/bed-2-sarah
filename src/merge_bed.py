@@ -34,30 +34,28 @@ def merge(f1: list[BedLine], f2: list[BedLine], outfile: TextIO) -> None: # shou
     
     i = 0
     j = 0
-    n = len(f1)+1
-    m = len(f2)+1
-
-    # how does one write to outfile? must remember...
+    n = len(f1)
+    m = len(f2)
     
     while i < n and j < m: # before either list has been run fully through
         if f1[i][0] < f2[j][0]: # chrom on f1 is smaller than f2
-            # add f1[i] to outfile
+            print_line(f1[i], outfile) # add f1[i] to outfile
             i += 1
         if f1[i][0] > f2[j][0]: # chrom on f2 is smaller than f2
-            # add f2[j] to outfile
+            print_line(f2[j], outfile) # add f2[j] to outfile
             j += 1
         else:
             if f1[i][1] <= f2[j][1]: # chrom is the same, but start is smaller/the same for f1 compared to f2
-                # add f1 to outfile
+                print_line(f1[i], outfile) # add f1 to outfile
                 i += 1
             else: # chrom is the same, but start for f2 is smaller than f1
-                # add f2 to outfile
+                print_line(f2[j], outfile) # add f2 to outfile
                 j += 1
     while i < n: # j must be equal to m, so all f2 elements are already in outfile
-        # add f1 to outfile
+        print_line(f1[i], outfile) # add f1 to outfile
         i += 1
     while j < m: # i must be equal to n, so all f1 elements are already in outfile
-        # add f2 to outfile
+        print_line(f2[j], outfile) # add f2 to outfile
         j += 1
     
     return None # None is returned to the function
