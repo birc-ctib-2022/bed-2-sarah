@@ -23,10 +23,10 @@ def lower_bound(x: list[int], v: int) -> int:
         if x[middel] > v:
             end = middel # new interval is cut in half
             middel = start + ((end - start)//2) # middel of new interval is found
-        if x[middel] < v:
+        elif x[middel] < v:
             start = middel + 1 # new interval is cut in half, +1 because python is start inclusive
             middel = start + ((end - start)//2)
-        if x[middel] == v:
+        elif x[middel] == v:
             return middel
     else:
         return len(x)
@@ -49,10 +49,10 @@ def upper_bound(x: list[int], v: int) -> int:
         if x[middel] > v:
             end = middel # new interval is cut in half
             middel = start + ((end - start)//2) # middel of new interval is found
-        if x[middel] < v:
+        elif x[middel] < v:
             start = middel + 1 # new interval is cut in half, +1 because python is start inclusive
             middel = start + ((end - start)//2)
-        if x[middel] == v:
+        elif x[middel] == v:
             return middel
     else:
         return len(x)
