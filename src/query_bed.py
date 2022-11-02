@@ -13,7 +13,8 @@ def extract_region(features: list[BedLine],
     """Extract region chrom[start:end] and write it to outfile."""
 
     query_results = []
-    
+
+    # we find the lower bound    
     s = 0 # start of search interval
     e = len(features) # end of search interval
 
@@ -23,9 +24,19 @@ def extract_region(features: list[BedLine],
             e = bound # the search intervall is halfed, to the left
         else: # start query is smaller or equal to our query start
             s = bound + 1 # search interval is halfed, to the right
-    while features[bound][1] < end: # while features start are smaller or equal to query end, they are added to result
-        query_results.append(features[bound]) # could be optimized with upper bound?
-        bound += 1 # remember to itterate
+    
+    # our lower bound is now s
+    if s >= len(features): # no features are in query if s >= len(features)
+        return query_results
+
+    while features[s][1] < end: # while features start are smaller to query end, they are added to result
+        #print("s = {} ::: end = {} ::: feature index s = {}".format(s, end, features[s]))
+        #print(features[112])
+        query_results.append(features[s]) # could be optimized with upper bound?
+        s += 1 # remember to itterate
+        if s == len(features): # if all features up to len(featres) are < end, we can return early
+            return query_results
+
     return query_results
 
 
