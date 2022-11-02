@@ -14,7 +14,7 @@ def lower_bound(x: list[int], v: int) -> int:
     >>> lower_bound([4, 4, 7, 7, 9, 10, 20, 20, 20], 20)
     6
 
-    >>> lowe_bound([1, 2, 5], 10)
+    >>> lower_bound([1, 2, 5], 10)
     3
 
     """
