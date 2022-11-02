@@ -20,15 +20,14 @@ def lower_bound(x: list[int], v: int) -> int:
     """
     start = 0 # start of search interval
     end = len(x) # end of search interval
-    middel = start + ((end - start)//2) # middel of search interval
 
     while start < end:
-        middel = start + ((end - start)//2) # middel of interval
-        if x[middel] >= v:
-            end = middel + 1
+        middel = (start+end)//2 # middel of interval
+        if  v <= x[middel]:
+            end = middel
         else:
-            start = middel
-    return middel
+            start = middel + 1
+    return start
 
 # Previous verison did not work as I intended,
 # got inspiration from https://www.youtube.com/watch?v=6-15eccc6ek&ab_channel=CodeSavant
@@ -39,7 +38,7 @@ def upper_bound(x: list[int], v: int) -> int:
     If all values in x are smaller than v, return len(x).
 
     >>> upper_bound([4, 4, 7, 7, 9, 10, 20, 20, 20], 7)
-    3
+    4
 
     >>> upper_bound([1, 2, 5], 10)
     3
@@ -47,12 +46,14 @@ def upper_bound(x: list[int], v: int) -> int:
     """
     start = 0 # start of search interval
     end = len(x) # end of search interval
-    middel = start + ((end - start)//2) # middel of search interval
 
     while start < end:
-        middel = start + ((end - start)//2) # middel of interval
-        if x[middel] <= v:
-            start = middel + 1
-        else:
+        middel = (start+end)//2 # middel of interval
+        if  v < x[middel]:
             end = middel
-    return middel
+        else:
+            start = middel + 1
+    return start
+
+print(lower_bound([4, 4, 7, 7, 9, 10, 20, 20, 20], 20))
+print(upper_bound([4, 4, 7, 7, 9, 10, 20, 20, 20], 7))

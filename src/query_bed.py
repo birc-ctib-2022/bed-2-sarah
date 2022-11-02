@@ -16,15 +16,14 @@ def extract_region(features: list[BedLine],
     
     s = 0 # start of search interval
     e = len(features) # end of search interval
-    bound = start + ((end - start)//2) # middel of search interval
 
     while s < e: # while our search interval is bigger or equl to 1
-        bound = s + ((e - s)//2) # lower bound is set to the middel of the interval
-        if features[bound][1] >= start: # start of query is bigger than our feature start
-            e = bound + 1 # the search intervall is halfed, to the left
+        bound = (s+e)//2 # lower bound is set to the middel of the interval
+        if start <= features[bound][1]: # start of query is bigger than our feature start
+            e = bound # the search intervall is halfed, to the left
         else: # start query is smaller or equal to our query start
-            s = bound # search interval is halfed, to the right
-    while features[bound][1] <= end: # while features start are smaller or equal to query end, they are added to result
+            s = bound + 1 # search interval is halfed, to the right
+    while features[bound][1] < end: # while features start are smaller or equal to query end, they are added to result
         query_results.append(features[bound]) # could be optimized with upper bound?
         bound += 1 # remember to itterate
     return query_results
