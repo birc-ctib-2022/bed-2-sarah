@@ -54,6 +54,3 @@ def upper_bound(x: list[int], v: int) -> int:
         else:
             start = middel + 1
     return start
-
-print(lower_bound([4, 4, 7, 7, 9, 10, 20, 20, 20], 20))
-print(upper_bound([4, 4, 7, 7, 9, 10, 20, 20, 20], 7))
