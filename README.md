@@ -60,7 +60,43 @@ Once you have implemented a lower bound search for the start of the range, imple
 
 *How do you use binary search to find the lower bound of a number? How did you have to modify the binary search algorithm?*
 
+To get binary search to output the lower bound, the conditions for resturning an index was changed. In binary search, when searching for an element, the index is returned when that value is found. In the modified-lower-bound-binary-search, the algorithm updates (+1) the value for lower bound whenever an element is smaller than the searched-for value. The algorithm keeps searching untill the search-interval is equal to 1. This way, the search does not stop, untill the lower bound is truly a lower bound, and not just the first found instance of the searched-for value.
+
 *Would anything be more difficult if the features covered ranges instead of single nucleotides (like real BED files)? What could go wrong, if anything?*
+
+Because features only cover a single nucleotide, we can describe all features within the query with qs <= fs < qe, where qs is the start of the query, fs is the start of the features, and qe is the end of the query. This is used in the binary-search algorithm.
+
+If features were multiple bases long qs <= fs < qe would only describe features within the query:
+
+q:     |-----|
+f:       |-|
+
+If features were multiple bases long, the following features would also be within the query:
+
+q:     |-----|
+f1:  |----|
+f2:         |--|
+f3: |-----------|
+
+For the first feature, fe (feature end) is within the query: qs <= fe < qe
+For the second feature, fs is within the query: qs <= fs < qe
+For the third feature, fs is smaller than qs and fe is bigger than qe: fs < qs and fe > qe
+
+The algorithm works by 1) doing a binary search to find the lower bound for qs <= fs, and then 2) adding all BED-lines where fs < qe. If features were multiple bases long, only features within the query would be found. The algorithm would have to be altered significantly to incorporate all possible features within the query (a lot of if statements).
 
 *We wrote a tool for merging two BED files, but what if we had a bunch of them? What would the complexity be if we merged them in, one at a time? What would the complexity be if we merged all of the files at the same time?*
 
+For two files, the algorithm runs in O(n + m), where n and m are the lengths of the two BED-files. The resoning behind the O(n + m) complexity, is that we have to run through each element in the two BED-files, compare them (which we assume takes O(1) complexity), and add the smallest to the merge-output (which we assume takes O(1) complexity).
+
+If we had k BED-files, of length l_k, and we merged them one at a time, the first step would take O(l_1 + l_2) complexity. The new, merged file, would have length l_12. The next step would take O(l_12 + l_3) complexity. The total complexity for the first two steps can be written as O(l_1 + l_2) + O(l_12 + l_3) = O(l_1 + l_2 + l_12 + l_3). This can be generalised to: O(l_1 + l_2 + l_12 + l_3 + ... + l_[1:k] + l_k). Because the merged file grows in length for each step, we can approximate the complexity to exponential growth O(k^2).
+
+|   . <- length of BED file 1234
+|
+|
+|
+|  .  <- length of BED-file 123
+|
+| .   <- length of BED-file 12
+|.    <- length of BED-files 1, 2, 3, ..., k                     
+
+If we merged them all at once, the algorithm would have to compare all k elements to find the smallest and add it to the output. A single comparison takes O(1) complexity. When there are k elements, there would have to be (k!/(2!(k-2)!)) comparisons for each step. There would have to be (l_1 + l_2 + l_3 + ... + l_k) steps, to run through all elements in all k BED files. This would create a time complexity of O((l_1 + l_2 + l_3 + ... + l_k)*(k!/(2!(k-2)!))).
