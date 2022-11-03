@@ -10,13 +10,47 @@ def lower_bound(x: list[int], v: int) -> int:
     """Get the index of the lower bound of v in x.
 
     If all values in x are smaller than v, return len(x).
-    """
-    return 0  # FIXME: Obviously the answer isn't always 0
 
+    >>> lower_bound([4, 4, 7, 7, 9, 10, 20, 20, 20], 20)
+    6
+
+    >>> lower_bound([1, 2, 5], 10)
+    3
+
+    """
+    start = 0 # start of search interval
+    end = len(x) # end of search interval
+
+    while start < end:
+        middel = (start+end)//2 # middel of interval
+        if  v <= x[middel]:
+            end = middel
+        else:
+            start = middel + 1
+    return start
+
+# Previous verison did not work as I intended,
+# got inspiration from https://www.youtube.com/watch?v=6-15eccc6ek&ab_channel=CodeSavant
 
 def upper_bound(x: list[int], v: int) -> int:
     """Get the index of the upper bound of v in x.
 
     If all values in x are smaller than v, return len(x).
+
+    >>> upper_bound([4, 4, 7, 7, 9, 10, 20, 20, 20], 7)
+    4
+
+    >>> upper_bound([1, 2, 5], 10)
+    3
+
     """
-    return 0  # FIXME: Obviously the answer isn't always 0
+    start = 0 # start of search interval
+    end = len(x) # end of search interval
+
+    while start < end:
+        middel = (start+end)//2 # middel of interval
+        if  v < x[middel]:
+            end = middel
+        else:
+            start = middel + 1
+    return start

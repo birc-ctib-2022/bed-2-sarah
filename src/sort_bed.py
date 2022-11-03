@@ -15,9 +15,12 @@ def sort_file(table: Table) -> None:
         # Here we iterate through all the chromosomes in the file.
         # You need to sort `features` with respect to chrom_start
         # and then updatte the table
-        # FIXME: sort `features`
+
+        features.sort(key=lambda x: x[1]) # Should sort in-place
+
         table[chrom] = features  # features should be sorted here
 
+# Inspiration from StackOverflow "How to sort a list/tuple of lists/tuples by the element at a given index?"
 
 def print_file(table: Table, outfile: TextIO) -> None:
     """Write the content of table to outfile."""
